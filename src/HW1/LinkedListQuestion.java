@@ -1,3 +1,5 @@
+package HW1;
+
 import java.util.NoSuchElementException;
 
 public class LinkedListQuestion {

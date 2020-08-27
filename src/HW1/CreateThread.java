@@ -1,3 +1,4 @@
+package HW1;
 
 public class CreateThread {
     public static void main(String[] args) {
@@ -19,8 +20,8 @@ public class CreateThread {
 class Thread1 extends Thread {
     @Override
     public void run() {
-        System.out.println("Thread1 is running");
-        System.out.println("Thread1 end");
+        System.out.println("HW1.Thread1 is running");
+        System.out.println("HW1.Thread1 end");
     }
 }
 

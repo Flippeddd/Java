@@ -1,3 +1,4 @@
+package HW1;
 
 public class SemaphoreDemo {
     public static void main(String[] args) {
