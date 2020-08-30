@@ -9,7 +9,6 @@ import java.util.concurrent.BlockingQueue;
 public class ThreadPoolDemo {
     private int size;
 
-    public ThreadPoolDemo
 }
 
 class ThreadPool {

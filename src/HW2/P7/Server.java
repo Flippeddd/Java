@@ -3,62 +3,56 @@ package HW2.P7;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
-/**
- * @author <Bofeng Ding>
- * @version 1.0
- * @date 2020-08-28 18:26
- */
 public class Server {
     public static void main(String[] args) throws IOException {
-        ServerSocket ss = new ServerSocket(6666);
+        ServerSocket serverSocket = new ServerSocket(3000);
         System.out.println("Server is running");
         while (true) {
-            Socket sock = ss.accept();
-            System.out.println("connected from " + sock.getRemoteSocketAddress());
-            Thread t = new Handler(sock);
+            Socket socket = serverSocket.accept();
+            Thread t = new Handler(socket);
             t.start();
         }
     }
 }
 
 class Handler extends Thread {
-    Socket sock;
+    Socket socket;
 
-    public Handler (Socket sock) {
-        this.sock = sock;
+    public Handler (Socket socket) {
+        this.socket = socket;
     }
 
     @Override
     public void run() {
-        try (InputStream input = this.sock.getInputStream()) {
-            try (OutputStream output = this.sock.getOutputStream()) {
+        try (InputStream input = socket.getInputStream()) {
+            try (OutputStream output = socket.getOutputStream()) {
                 handle(input, output);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             try {
-                this.sock.close();
-            } catch (IOException IOe) {
-                System.out.println("client disconnected.");
+                socket.close();
+            } catch (IOException e1){
+                 System.out.println("Client disconnected");
             }
         }
     }
 
     private void handle(InputStream input, OutputStream output) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
-        writer.write("hello\n");
-        writer.flush();
-        for(;;) {
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+//        writer.write("Server start...\n");
+//        writer.flush();
+        while (true) {
             String s = reader.readLine();
-            if (s.equals("bye")) {
-                writer.write("bye\n");
+            if (s.equals("Close")) {
+                writer.write("Server closed\n");
                 writer.flush();
                 break;
             }
-            writer.write("ok: " + s + "\n");
+            writer.write(s + "\n");
             writer.flush();
         }
     }
 }
+
